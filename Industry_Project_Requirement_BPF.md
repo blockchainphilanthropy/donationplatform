@@ -44,7 +44,7 @@ The Foundation aims to:
 
 ## Platform Actors
 
-- Site administrator
+- Website administrator
   - Administers website and storage of user data
 
 

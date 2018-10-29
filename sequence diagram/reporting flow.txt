@@ -1,0 +1,33 @@
+@startuml
+    actor Charity as c
+    participant "**Reporting Page** \n React" as rp
+    participant "**Auth0**" as a0
+    participant "**Reporting API**" as rapi
+    participant "**Blockchain.info API**" as bapi
+    participant "**Infura API**" as iapi
+    participant "**CoinMarketCap**" as capi
+    database "**Price DB**" as pdb
+
+== Reporting ==
+    c -> rp: login
+    rp -> a0: initiate Auth0 widget
+    a0 --> rp
+    rp --> c: display Auth0 widget
+    c -> a0: charity login
+
+    c -> rp: enter reporting filter \n (time and / or crypto currency)
+    rp -> rapi: send query to \n Reporting API
+    rapi -> a0: validat charity
+    a0 --> rapi
+    rapi -> bapi: query BTC tx
+    bapi --> rapi
+    rapi -> iapi: query ETH tx
+    iapi --> rapi
+    rapi -> capi: query price conversion
+    capi --> rapi
+    rapi -> pdb: insert received price
+    rapi -> rapi: construct transaction list
+    rapi --> rp: transaction list
+    c -> rp: download as CSV or PDF
+    rp -> rp: generate CSV / PDF from tx list
+@end

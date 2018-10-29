@@ -1,0 +1,41 @@
+@startuml
+    actor donor as d
+    participant "**Donate Page** \n React" as dp
+    database "**Campaign - Charity DB**" as cdb
+    participant "Auth0" as a0
+    participant MyCrypto as mc
+    participant MetaMask as mm
+
+== Donation ==
+    d -> dp: donor arrive at landing page \n and select campaign
+    dp -> cdb: get campaign info
+    cdb --> dp
+    d -> dp: donor select currency
+    alt **BTC**
+        dp -> d: display wallet \n address in QR
+    else **ETH**
+        dp -> d: display wallet address in QR \n and MyCrypto link and MetaMask payment link
+        alt wallet address in QR
+            d -> d: make manual donation
+        else MyCrypto
+            d -> dp: enter the donation amount
+            d -> dp: click on MyCrypto link
+            dp -> mc: redirect to MyCrypto
+        else MetaMask
+            d -> dp: enter the donation amount
+            d -> dp: click on MetaMask link
+            dp -> mm: open transaction in MetaMask
+        end
+    end
+
+    alt signup - login (optional)
+        d -> dp: select login option
+        dp -> a0: initiate Auth0 widget
+        a0 --> dp
+        dp --> d: display Auth0 widget
+        d -> a0: donor signup / login
+    end
+
+
+
+@end

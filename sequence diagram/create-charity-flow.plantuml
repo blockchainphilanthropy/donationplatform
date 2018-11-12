@@ -1,0 +1,38 @@
+@startuml
+    actor administrator as a
+    participant "**Home Page**\n React" as home
+    participant "Auth0" as a0
+    database "**Auth0 user database**" as a0db
+
+    participant "**Charity Maintenance Page**\n React" as cmp
+    database "**Campaign - Charity DB**" as cdb
+
+== Administrator Login ==
+    a -> home: Administrator arrive at home page \n and select login button
+    a0 --> home: Auth0 display login widget
+    a -> a0: Administrator enters \nlogin information
+    a0 --> home: Auth0 returns login token \n and redirect to home
+    home -> a0: Home page requests user information\n from Auth0
+    a0 -> a0db: Auth0 queries database for user profile
+    a0db --> a0: User profile retreived
+    a0 --> home: Auth0 returns user profile to home page 
+    home -> home: Homepage displays Charity Maintenance \n link if user is Administrator
+    a -> cmp: Administrator navigates to \n Charity Maintenance Page
+    cmp -> cdb: Charity Mainentance Page retrieves\ncharity list from DB
+    cdb --> cmp: Charities displayed on page
+
+== Charity Maintenance ==
+    a -> cmp: Administrator selects charity
+    cmp -> cmp: Charity details displayed
+    a -> cmp: Administrator edits details\nand selects 'Save'
+    cmp -> cdb: Charity Maintenance Page PUTs updated\ndetails to database
+    cmp -> cmp: Charity details displayed
+
+    alt Create new charity (optional)
+        a -> cmp: Select 'New Charity'
+        cmp -> cmp: New charity form displayed
+        a -> cmp: Administrator enters details\nand selects 'Save'
+        cmp -> cdb: Charity Maintenance Page POST updated\ndetails to database
+        cmp -> cmp: Charity details displayed        
+    end
+@end

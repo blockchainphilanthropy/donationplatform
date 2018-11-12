@@ -16,8 +16,8 @@
     a0 -> a0db: Auth0 queries database for user profile
     a0db --> a0: User profile retreived
     a0 --> home: Auth0 returns user profile to home page 
-    a -> cmp: Administrator navigates to \n Charity Maintenance Page
     home -> home: Homepage displays Charity Maintenance \n link if user is Administrator
+    a -> cmp: Administrator navigates to \n Charity Maintenance Page
     cmp -> cdb: Charity Mainentance Page retrieves\ncharity list from DB
     cdb --> cmp: Charities displayed on page
 
